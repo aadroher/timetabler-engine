@@ -1,9 +1,8 @@
-import yaml
+from amazing_printer import ap
+from .loader import Loader
+from .model import Model
 
 
-class Subjects(yaml.YAMLObject):
-    yaml_tag = '!Subjects'
-
-    def __init__(self, name, code):
-        self.name = name
-        self.code = code
+class Subject(Model):
+    def __init__(self, code):
+        super().__init__('subjects', code)

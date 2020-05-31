@@ -1,16 +1,13 @@
 
 from amazing_printer import ap
 from .loader import Loader
+from .model import Model
 
 
-class Phase:
+class Phase(Model):
     def __init__(self, code):
-        self.code = code
+        super().__init__('phases', code)
 
     @property
-    def __record(self):
-        return next(Loader('phases').by_code(self.code))
-
-    @property
-    def name(self):
-        return self.__record['name']
+    def subjects(self):
+        pass
