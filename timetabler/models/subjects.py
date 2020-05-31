@@ -1,13 +1,13 @@
 from .loader import load_records
 
 
-def subjects():
+def all():
     return load_records('Subject', 'subjects')
 
 
-def common_subjects():
-    return [s for s in subjects() if s.type == 'com']
+def common():
+    return [s for s in all() if s.type == 'com']
 
 
-def modality_subjects():
-    return [s for s in subjects() if s.type == 'mod']
+def modality():
+    return [s for s in all() if s.type == 'mod']
