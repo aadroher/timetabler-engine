@@ -1,0 +1,32 @@
+- name: Català
+  code: cat
+- name: Castellà
+  code: cas
+- name: Anglès
+  code: ang
+- name: Filosofia
+  code: fil
+- name: Ciències per al Món Contemporani
+  code: cmc
+- name: Història
+  code: his
+- name: Matemàtiques
+  code: mat
+- name: Matemàtiques CS
+  code: mcs
+- name: Llatí
+  code: lla
+- name: Biologia
+  code: bio
+- name: Física
+  code: fis
+- name: Química
+  code: qui
+- name: Economia
+  code: eco
+- name: Geografia
+  code: geo
+- name: Grec
+  code: gre
+- name: Història de L'Art
+  code: hda
