@@ -1,16 +1,21 @@
 
+from collections import namedtuple
 from yaml import load, Loader as YamlLoader, Dumper as YamlDumper
 from pathlib import Path
+
+from amazing_printer import ap
 
 current_dir = Path(__file__).parent
 data_dir_path = current_dir/'../../data'
 
 
-class Loader:
-    def __init__(self, collection_name):
-        self.collection_name = collection_name
-        raw_data = (data_dir_path/f'{collection_name}.yml').read_text()
-        self.records = load(raw_data, Loader=YamlLoader)
+def load_records(type_name='', collection_name=''):
+    raw_data = (data_dir_path/f'{collection_name}.yml').read_text()
+    records = load(raw_data, Loader=YamlLoader)
 
-    def by_code(self, code):
-        return (record for record in self.records if record['code'] == code)
+    def get_named_tuple(type_name='', record=None):
+        field_names = list(record)
+        NewClass = namedtuple(type_name, field_names)
+        return NewClass(**record)
+
+    return [get_named_tuple(type_name=type_name, record=record) for record in records]
