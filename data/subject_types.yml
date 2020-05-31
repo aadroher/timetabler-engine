@@ -1,0 +1,8 @@
+- name: Common
+  code: com
+  phase: bat
+  hours_week: 3
+- name: Modality
+  code: mod
+  phase: bat
+  hours_week: 4

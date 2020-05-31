@@ -1,6 +1,7 @@
 from yaml import load, Loader as YamlLoader, Dumper as YamlDumper
 from pathlib import Path
 from amazing_printer import ap
+from .models.phase import Phase
 
 current_dir = Path(__file__).parent
 data_dir_path = current_dir/'../data'
@@ -18,4 +19,6 @@ def load_studies():
 
 
 def main():
-    load_studies()
+    phase = Phase('bat')
+    ap(phase)
+    ap(phase.name)
