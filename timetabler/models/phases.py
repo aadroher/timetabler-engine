@@ -14,3 +14,5 @@ def batxillerat():
 
 def curricula(phase=batxillerat()):
     curriculum_records = load_records('Curriculum', 'curricula')
+    return curriculum_records
+

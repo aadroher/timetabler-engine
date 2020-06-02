@@ -2,16 +2,22 @@
   code: cit
   phase: bat
   subjects:
+    - cat
+    - cas
+    - ang
+    - fil
+    - cmc
     - mat
     - fis
     - qui
-    - bio
 - name: Humanitats i ciències socials
   code: hcs
   subjects:
+    - cat
+    - cas
+    - ang
+    - fil
+    - cmc
     - mcs
-    - lla
     - eco
     - geo
-    - gre
-    - hda

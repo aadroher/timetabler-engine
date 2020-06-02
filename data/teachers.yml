@@ -1,0 +1,34 @@
+- name: Linguist
+  code: lin
+  subjects:
+    - cat
+    - cas
+    - ang
+    - lla
+- name: Philosopher
+  code: phi
+  subjects:
+    - phi
+    - his
+    - cmc
+- name: Social Cientitst
+  code: soc
+  subjects:
+    - mcs
+    - his
+    - eco
+    - geo
+    - cmc
+- name: Mathematicican
+  code: mat
+  subjects:
+    - mat
+    - mcs
+    - fis
+    - qui
+- name: Biologist
+  code: bio
+  subjects:
+    - mat
+    - qui
+    - bio
