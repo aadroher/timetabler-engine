@@ -1,5 +1,4 @@
-rooms:
-  - name: Aula 1
-    code: r01
-  - name: Aula 2
-    code: r02
+- name: Aula 1
+  code: r01
+- name: Aula 2
+  code: r02
