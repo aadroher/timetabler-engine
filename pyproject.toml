@@ -8,6 +8,7 @@ authors = ["Armand Adroher <aadroher@gmail.com>"]
 python = "^3.8"
 ortools = "^7.6.7691"
 PyYaml = "^5.3.1"
+amazing-printer = "^0.1.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"

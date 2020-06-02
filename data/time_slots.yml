@@ -1,0 +1,12 @@
+- name: 8:00 AM
+  position: 0
+- name: 9:00 AM
+  position: 1
+- name: 10:00 AM
+  position: 2
+- name: 11:00 AM
+  position: 3
+- name: 12:00 PM
+  position: 4
+- name: 01:00 PM
+  position: 5

@@ -1,0 +1,23 @@
+- name: Ciènices i tecnologia
+  code: cit
+  phase: bat
+  subjects:
+    - cat
+    - cas
+    - ang
+    - fil
+    - cmc
+    - mat
+    - fis
+    - qui
+- name: Humanitats i ciències socials
+  code: hcs
+  subjects:
+    - cat
+    - cas
+    - ang
+    - fil
+    - cmc
+    - mcs
+    - eco
+    - geo
