@@ -3,6 +3,12 @@ from functools import reduce
 from ortools.sat.python import cp_model
 from ..utils.printer import pp
 from ..models import rooms, days, time_slots, teachers, subjects, curricula
+from ..views.cli import room_schedules
+
+
+def get_session_codes(session):
+    r, d, h, t, s = session
+    return tuple(item.code for item in [r, d, h, t, s])
 
 
 def get_sessions():
@@ -19,11 +25,10 @@ def get_sessions():
 def get_session_vars(model=None, sessions=[]):
 
     def add_session_var(session_vars, session):
-        r, d, h, t, s = session
-        codes = tuple(item.code for item in [r, d, h, t, s])
+        codes = get_session_codes(session)
         var_name = '|'.join(codes)
         new_var = model.NewBoolVar(var_name)
-        return {**session_vars, codes: new_var}
+        return {**session_vars, session: new_var}
 
     return (model, reduce(add_session_var, sessions, {}))
 
@@ -50,4 +55,16 @@ def solve():
     model = separate_room_by_curriculum(
         model=model, session_vars=session_vars, sessions=sessions)
 
+    solver = cp_model.CpSolver()
+    status = solver.Solve(model)
+
+    pp('\n')
+    pp(solver.StatusName(status))
+    pp(session_vars[sessions[10]])
+    pp(solver.ResponseStats())
+
     print(model.ModelStats())
+
+    schedules = room_schedules(solver=solver, session_vars=session_vars)
+    for schedule in schedules:
+        print(schedule)
