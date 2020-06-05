@@ -40,9 +40,41 @@ def separate_room_by_curriculum(model=None, session_vars={}, sessions=[]):
     cit = next(c for c in cs if c.code == 'cit')
     hcs = next(c for c in cs if c.code == 'hcs')
 
-    for r, _, _, _, s in sessions:
-        model.Add(r != 'r01' or s in cit.subjects)
-        model.Add(r != 'r02' or s in hcs.subjects)
+    for r, d, h, t, s in sessions:
+        if r.code != 'r01' or s.code in cit.subjects:
+            model.Add(session_vars[(r, d, h, t, s)] == 1)
+        if r.code != 'r02' or s.code in hcs.subjects:
+            model.Add(session_vars[(r, d, h, t, s)] == 1)
+
+    return model
+
+
+def right_num_hours(model=None, session_vars={}, sessions=[]):
+    cs = curricula.all()
+    cit = next(c for c in cs if c.code == 'cit')
+    hcs = next(c for c in cs if c.code == 'hcs')
+
+    for curriculum in [cit, hcs]:
+        common_subjects = curriculum.subjects[:4]
+        modality_subjects = curriculum.subjects[4:]
+
+        for common_subject in common_subjects:
+            sessions_with_common_subjects = [
+                (r, d, h, t, s) for r, d, h, t, s in sessions if s.code == common_subject
+            ]
+            model.Add(
+                sum(session_vars[s] for s in sessions_with_common_subjects)
+                == 3 * 2
+            )
+
+        for modality_subject in modality_subjects:
+            sessions_with_modality_subjects = [
+                (r, d, h, t, s) for r, d, h, t, s in sessions if s.code == modality_subject
+            ]
+            model.Add(
+                sum(session_vars[s] for s in sessions_with_modality_subjects)
+                == 4
+            )
 
     return model
 
@@ -54,13 +86,15 @@ def solve():
 
     model = separate_room_by_curriculum(
         model=model, session_vars=session_vars, sessions=sessions)
+    model = right_num_hours(
+        model=model, session_vars=session_vars, sessions=sessions)
 
     solver = cp_model.CpSolver()
     status = solver.Solve(model)
 
     pp('\n')
-    pp(solver.StatusName(status))
-    pp(session_vars[sessions[10]])
+    # pp(solver.StatusName(status))
+    # pp(session_vars[sessions[10]])
     pp(solver.ResponseStats())
 
     print(model.ModelStats())

@@ -18,10 +18,12 @@ def get_row(solver=None, session_vars={}, room=None, time_slot=None, days=days):
                 var_name = session_vars[
                     (room, day, time_slot, teacher, subject)
                 ]
-                print(var_name)
-                if solver.Value(var_name):
-                    slot_label_tokens.extend(f'{teacher.code}: {subject.code}')
-        slot_label = '|'.join(slot_label_tokens)
+                # print(var_name)
+                if solver.Value(var_name) == 1:
+                    slot_label_tokens.extend(
+                        [f'{teacher.code}:{subject.code}']
+                    )
+        slot_label = ' | '.join(slot_label_tokens[:3])
         row.append(slot_label)
 
     return row
