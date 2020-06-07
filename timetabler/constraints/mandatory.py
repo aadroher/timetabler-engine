@@ -7,7 +7,7 @@ from ..models import rooms, days, time_slots, teachers, subjects, curricula
 def has_the_right_teacher(model=None, session_vars={}, sessions=[]):
     for r, d, h, t, s in sessions:
         variable = session_vars[(r, d, h, t, s)]
-        model.AddHint(variable, s.code in t.subjects)
+        model.Add(variable <= int(s.code in t.subjects))
 
     return model
 
