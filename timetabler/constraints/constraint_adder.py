@@ -12,8 +12,8 @@ mandatory_constraints = [
     has_the_right_teacher,
     hours_a_week_per_subject,
     distinct_subjects_per_slot_and_room,
-    distinct_teachers_per_slot
-    # room_curriculum_equivalence,
+    distinct_teachers_per_slot,
+    room_curriculum_equivalence
 ]
 
 
