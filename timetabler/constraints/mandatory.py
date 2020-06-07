@@ -87,3 +87,17 @@ def min_hours(model=None, session_vars={}, sessions=[]):
         model.Add(sum(room_day_vars) >= 5)
 
     return model
+
+
+def consecutive_sessions(model=None, session_vars={}, sessions=[]):
+    core_time_slots = [
+        h for h in time_slots.all() if h.position in range(1, 5)
+    ]
+    for r, d in product(rooms.all(), days.all()):
+        core_time_slot_vars = [
+            session_vars[(r, d, h, t, s)]
+            for h, t, s in product(core_time_slots, teachers.all(), subjects.all())
+        ]
+        model.Add(sum(core_time_slot_vars) == 4)
+
+    return model
