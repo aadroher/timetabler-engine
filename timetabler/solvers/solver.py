@@ -86,8 +86,8 @@ def solve():
 
     model = separate_room_by_curriculum(
         model=model, session_vars=session_vars, sessions=sessions)
-    model = right_num_hours(
-        model=model, session_vars=session_vars, sessions=sessions)
+    # model = right_num_hours(
+    #     model=model, session_vars=session_vars, sessions=sessions)
 
     solver = cp_model.CpSolver()
     status = solver.Solve(model)
@@ -101,4 +101,4 @@ def solve():
 
     schedules = room_schedules(solver=solver, session_vars=session_vars)
     for schedule in schedules:
-        print(schedule)
+        print(schedule + '\n')
