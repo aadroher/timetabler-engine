@@ -38,12 +38,15 @@ def room_curriculum_equivalence(model=None, session_vars={}, sessions=[]):
     cs = curricula.all()
     cit = next(c for c in cs if c.code == 'cit')
     hcs = next(c for c in cs if c.code == 'hcs')
+    room_code_to_curriculum = {
+        'r01': cit,
+        'r02': hcs
+    }
 
     for r, d, h, t, s in sessions:
-        if r.code != 'r01' or s.code in cit.subjects:
-            model.Add(session_vars[(r, d, h, t, s)] == 1)
-        if r.code != 'r02' or s.code in hcs.subjects:
-            model.Add(session_vars[(r, d, h, t, s)] == 1)
+        curriculum = room_code_to_curriculum[r.code]
+        if s.code not in curriculum.subjects:
+            model.Add(session_vars[(r, d, h, t, s)] == 0)
 
     return model
 
