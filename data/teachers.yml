@@ -3,7 +3,14 @@
   subjects: !!python/tuple
     - cat
     - cas
+    - lla
+- name: English
+  code: eng
+  subjects: !!python/tuple
     - ang
+- name: Classic
+  code: cla
+  subjects: !!python/tuple
     - lla
 - name: Philosopher
   code: phi
