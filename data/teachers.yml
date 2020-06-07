@@ -1,19 +1,19 @@
 - name: Linguist
   code: lin
-  subjects:
+  subjects: !!python/tuple
     - cat
     - cas
     - ang
     - lla
 - name: Philosopher
   code: phi
-  subjects:
+  subjects: !!python/tuple
     - phi
     - his
     - cmc
 - name: Social Cientitst
   code: soc
-  subjects:
+  subjects: !!python/tuple
     - mcs
     - his
     - eco
@@ -21,14 +21,14 @@
     - cmc
 - name: Mathematicican
   code: mat
-  subjects:
+  subjects: !!python/tuple
     - mat
     - mcs
     - fis
     - qui
 - name: Biologist
   code: bio
-  subjects:
+  subjects: !!python/tuple
     - mat
     - qui
     - bio

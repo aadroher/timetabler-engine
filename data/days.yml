@@ -1,0 +1,15 @@
+- name: Monday
+  code: mon
+  pos: 0
+- name: Tuesday
+  code: tue
+  pos: 1
+- name: Wednesday
+  code: wed
+  pos: 2
+- name: Thursday
+  code: thu
+  pos: 3
+- name: Friday
+  code: fri
+  pos: 4

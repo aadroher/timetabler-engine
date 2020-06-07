@@ -1,12 +1,18 @@
 - name: 8:00 AM
+  code: "08"
   position: 0
 - name: 9:00 AM
+  code: "09"
   position: 1
 - name: 10:00 AM
+  code: "10"
   position: 2
 - name: 11:00 AM
+  code: "11"
   position: 3
 - name: 12:00 PM
+  code: "12"
   position: 4
 - name: 01:00 PM
+  code: "13"
   position: 5
