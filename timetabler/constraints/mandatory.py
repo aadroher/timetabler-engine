@@ -76,3 +76,14 @@ def hours_a_week_per_subject(model=None, session_vars={}, sessions=[]):
             )
 
     return model
+
+
+def min_hours(model=None, session_vars={}, sessions=[]):
+    for r, d in product(rooms.all(), days.all()):
+        room_day_vars = [
+            session_vars[(r, d, h, t, s)]
+            for h, t, s in product(time_slots.all(), teachers.all(), subjects.all())
+        ]
+        model.Add(sum(room_day_vars) >= 5)
+
+    return model

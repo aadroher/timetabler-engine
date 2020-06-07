@@ -4,7 +4,8 @@ from .mandatory import (
     distinct_subjects_per_slot_and_room,
     distinct_teachers_per_slot,
     room_curriculum_equivalence,
-    hours_a_week_per_subject
+    hours_a_week_per_subject,
+    min_hours
 )
 
 
@@ -13,7 +14,8 @@ mandatory_constraints = [
     hours_a_week_per_subject,
     distinct_subjects_per_slot_and_room,
     distinct_teachers_per_slot,
-    room_curriculum_equivalence
+    room_curriculum_equivalence,
+    min_hours
 ]
 
 
