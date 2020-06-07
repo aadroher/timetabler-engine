@@ -7,29 +7,27 @@ from ..models import rooms, days, time_slots, teachers, subjects, curricula
 def has_the_right_teacher(model=None, session_vars={}, sessions=[]):
     for r, d, h, t, s in sessions:
         variable = session_vars[(r, d, h, t, s)]
-        model.Add(variable == int(s.code in t.subjects))
+        model.AddHint(variable, s.code in t.subjects)
 
     return model
 
 
 def distinct_subjects_per_slot_and_room(model=None, session_vars={}, sessions=[]):
-    ss = subjects.all()
-    for r, d, h, t in product(rooms.all(), days.all(), time_slots.all(), teachers.all()):
+    for r, d, h in product(rooms.all(), days.all(), time_slots.all()):
         subject_vars = [
             session_vars[(r, d, h, t, s)]
-            for s in ss
+            for t, s in product(teachers.all(), subjects.all())
         ]
-        model.AddLinearConstraint(sum(subject_vars), 0, 1)
+        model.Add(sum(subject_vars) <= 1)
 
     return model
 
 
-def distinct_teachers_per_slot_and_room(model=None, session_vars={}, sessions=[]):
-    ts = teachers.all()
-    for r, d, h, t in product(rooms.all(), days.all(), time_slots.all(), teachers.all()):
+def distinct_teachers_per_slot(model=None, session_vars={}, sessions=[]):
+    for d, h, t in product(days.all(), time_slots.all(), teachers.all()):
         teacher_vars = [
             session_vars[(r, d, h, t, s)]
-            for s in ts
+            for r, s in product(rooms.all(), subjects.all())
         ]
         model.Add(sum(teacher_vars) <= 1)
 
