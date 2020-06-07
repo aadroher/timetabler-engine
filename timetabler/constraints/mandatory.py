@@ -19,7 +19,19 @@ def distinct_subjects_per_slot_and_room(model=None, session_vars={}, sessions=[]
             session_vars[(r, d, h, t, s)]
             for s in ss
         ]
-        model.Add(sum(subject_vars) <= 1)
+        model.AddLinearConstraint(sum(subject_vars), 0, 1)
+
+    return model
+
+
+def distinct_teachers_per_slot_and_room(model=None, session_vars={}, sessions=[]):
+    ts = teachers.all()
+    for r, d, h, t in product(rooms.all(), days.all(), time_slots.all(), teachers.all()):
+        teacher_vars = [
+            session_vars[(r, d, h, t, s)]
+            for s in ts
+        ]
+        model.Add(sum(teacher_vars) <= 1)
 
     return model
 
@@ -39,36 +51,27 @@ def room_curriculum_equivalence(model=None, session_vars={}, sessions=[]):
 
 
 def hours_a_week_per_subject(model=None, session_vars={}, sessions=[]):
-    cs = curricula.all()
-    cit = next(c for c in cs if c.code == 'cit')
-    hcs = next(c for c in cs if c.code == 'hcs')
+    for curriculum in curricula.all():
+        common_subject_codes = curriculum.subjects[:5]
+        modality_subject_codes = curriculum.subjects[5:]
+        sujects_codes_and_hours = [
+            (subject_code, 3) for subject_code in common_subject_codes
+        ] + [
+            (subject_code, 4) for subject_code in modality_subject_codes
+        ]
 
-    for curriculum in [cit, hcs]:
-        common_subjects = curriculum.subjects[:4]
-        modality_subjects = curriculum.subjects[4:]
-
-        pp(common_subjects)
-        for common_subject in common_subjects:
+        for subject_code, hours_week in sujects_codes_and_hours:
             room_code = {'cit': 'r01', 'hcs': 'r02'}[curriculum.code]
-            pp(common_subject)
-            sessions_with_common_subject = [
+            room_sessions_with_subject_code = [
                 (r, d, h, t, s) for r, d, h, t, s in sessions
-                if r.code == room_code and s.code == common_subject
+                if r.code == room_code and s.code == subject_code
             ]
-            pp(sessions_with_common_subject)
-            common_subject_vars = [
-                session_vars[s] for s in sessions_with_common_subject
+            subject_vars = [
+                session_vars[s] for s in room_sessions_with_subject_code
             ]
-            # pp(common_subjects_vars)
-            model.Add(sum(common_subject_vars) == 3)
 
-        # for modality_subject in modality_subjects:
-        #     sessions_with_modality_subjects = [
-        #         (r, d, h, t, s) for r, d, h, t, s in sessions if s.code == modality_subject
-        #     ]
-        #     model.Add(
-        #         sum(session_vars[s] for s in sessions_with_modality_subjects)
-        #         == 4
-        #     )
+            model.AddLinearConstraint(
+                sum(subject_vars), hours_week, hours_week
+            )
 
     return model
