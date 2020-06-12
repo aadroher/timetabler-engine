@@ -2,36 +2,31 @@ from itertools import product
 from functools import reduce
 from ortools.sat.python import cp_model
 from ..utils.printer import pp
-from ..models import rooms, days, time_slots, teachers, subjects, curricula
+from ..models import rooms, days, time_slots, teachers, subjects, curricula, sessions
 from ..constraints.constraint_adder import add_constraints
 from ..views.cli import room_schedules
 
 
-def get_session_codes(session):
-    r, d, h, t, s = session
-    return tuple(item.code for item in [r, d, h, t, s])
-
-
 def get_sessions():
-    rs = rooms.all()
-    ds = days.all()
-    hs = time_slots.all()
-    ts = teachers.all()
-    ss = subjects.all()
+    return sessions.from_data(
+        rooms=rooms.all(),
+        days=days.all(),
+        time_slots=time_slots.all(),
+        teachers=teachers.all(),
+        subjects=subjects.all()
+    )
 
-    combinations = product(rs, ds, hs, ts, ss)
-    return list(combinations)
+
+def get_session_adder(model):
+    def add_session_var(session_vars, session):
+        var_name = ':'.join(item.code for item in session)
+        new_var = model.NewBoolVar(var_name)
+        return {**session_vars, session: new_var}
+    return add_session_var
 
 
 def get_session_vars(model=None, sessions=[]):
-
-    def add_session_var(session_vars, session):
-        codes = get_session_codes(session)
-        var_name = '|'.join(codes)
-        new_var = model.NewBoolVar(var_name)
-        return {**session_vars, session: new_var}
-
-    return (model, reduce(add_session_var, sessions, {}))
+    return (model, reduce(get_session_adder(model), sessions, {}))
 
 
 def solve():
