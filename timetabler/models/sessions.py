@@ -2,8 +2,8 @@ from collections import namedtuple
 from itertools import product
 from .loader import get_named_tuple
 
-Session = namedtuple(
-    'Session',
+SessionTuple = namedtuple(
+    'SessionTuple',
     [
         'room',
         'day',
@@ -12,6 +12,11 @@ Session = namedtuple(
         'subject'
     ]
 )
+
+
+class Session(SessionTuple):
+    def __repr__(self):
+        return ':'.join(item.code for item in self)
 
 
 def from_data(rooms=[], days=[], time_slots=[], teachers=[], subjects=[]):

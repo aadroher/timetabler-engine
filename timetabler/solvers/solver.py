@@ -19,7 +19,7 @@ def get_sessions():
 
 def get_session_adder(model):
     def add_session_var(session_vars, session):
-        var_name = '|'.join(item.code for item in session)
+        var_name = ':'.join(item.code for item in session)
         new_var = model.NewBoolVar(var_name)
         return {**session_vars, session: new_var}
     return add_session_var
