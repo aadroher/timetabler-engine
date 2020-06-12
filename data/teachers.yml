@@ -29,7 +29,7 @@
 #     - his
 #     - cmc
 - name: Social Cientist 0
-  code: sc0
+  code: ss0
   subjects: !!python/tuple
     - mcs
     - his
@@ -59,7 +59,7 @@
 #     - fis
 #     - qui
 - name: Scientist
-  code: sci
+  code: sc0
   subjects: !!python/tuple
     - mat
     - mcs

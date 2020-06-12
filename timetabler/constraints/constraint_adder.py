@@ -5,6 +5,7 @@ from .mandatory import (
     distinct_teachers_per_slot,
     room_curriculum_equivalence,
     hours_a_week_per_subject,
+    same_teacher_per_group_and_subject,
     min_hours,
     consecutive_sessions
 )
@@ -13,6 +14,7 @@ from .mandatory import (
 mandatory_constraints = [
     has_the_right_teacher,
     hours_a_week_per_subject,
+    same_teacher_per_group_and_subject,
     distinct_subjects_per_slot_and_room,
     distinct_teachers_per_slot,
     room_curriculum_equivalence,

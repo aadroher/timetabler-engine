@@ -78,6 +78,37 @@ def hours_a_week_per_subject(model=None, session_vars={}, sessions=[]):
     return model
 
 
+def same_teacher_per_group_and_subject(model=None, session_vars={}, sessions=[]):
+    for curriculum in curricula.all():
+        common_subject_codes = curriculum.subjects[:5]
+        modality_subject_codes = curriculum.subjects[5:]
+        sujects_codes_and_hours = [
+            (subject_code, 3) for subject_code in common_subject_codes
+        ] + [
+            (subject_code, 4) for subject_code in modality_subject_codes
+        ]
+
+        for subject_code, hours_week in sujects_codes_and_hours:
+            room_code = {'cit': 'r01', 'hcs': 'r02'}[curriculum.code]
+
+            for teacher in teachers.all():
+                room_sessions_with_subject_code_and_teacher = [
+                    (r, d, h, t, s) for r, d, h, t, s in sessions
+                    if r.code == room_code and s.code == subject_code and t == teacher
+                ]
+
+                print(len(room_sessions_with_subject_code_and_teacher))
+                print((subject_code, hours_week))
+
+                subject_vars = [
+                    session_vars[s] for s in room_sessions_with_subject_code_and_teacher
+                ]
+
+                model.Add(sum(subject_vars) == hours_week)
+
+    return model
+
+
 def min_hours(model=None, session_vars={}, sessions=[]):
     for r, d in product(rooms.all(), days.all()):
         room_day_vars = [
