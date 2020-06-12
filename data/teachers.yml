@@ -1,41 +1,67 @@
-- name: Linguist
-  code: lin
+- name: Linguist 0
+  code: li0
   subjects: !!python/tuple
     - cat
     - cas
-    - lla
-- name: English
-  code: eng
+# - name: Linguist 1
+#   code: li1
+#   subjects: !!python/tuple
+#     - cat
+#     - cas
+- name: English 0
+  code: en0
   subjects: !!python/tuple
     - ang
-- name: Classic
-  code: cla
+# - name: English 1
+#   code: en1
+#   subjects: !!python/tuple
+#     - ang
+- name: Philosopher 0
+  code: ph0
   subjects: !!python/tuple
-    - lla
-- name: Philosopher
-  code: phi
-  subjects: !!python/tuple
-    - phi
+    - fil
     - his
     - cmc
-- name: Social Cientitst
-  code: soc
+# - name: Philosopher 1
+#   code: ph1
+#   subjects: !!python/tuple
+#     - fil
+#     - his
+#     - cmc
+- name: Social Cientist 0
+  code: sc0
   subjects: !!python/tuple
     - mcs
     - his
     - eco
     - geo
     - cmc
-- name: Mathematicican
-  code: mat
+# - name: Social Cientist 1
+#   code: sc1
+#   subjects: !!python/tuple
+#     - mcs
+#     - his
+#     - eco
+#     - geo
+#     - cmc
+- name: Mathematicican 0
+  code: ma0
   subjects: !!python/tuple
     - mat
     - mcs
     - fis
     - qui
-- name: Biologist
-  code: bio
+# - name: Mathematicican 1
+#   code: ma1
+#   subjects: !!python/tuple
+#     - mat
+#     - mcs
+#     - fis
+#     - qui
+- name: Scientist
+  code: sci
   subjects: !!python/tuple
     - mat
+    - mcs
+    - fis
     - qui
-    - bio

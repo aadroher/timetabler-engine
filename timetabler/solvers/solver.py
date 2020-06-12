@@ -41,12 +41,11 @@ def solve():
     solver = cp_model.CpSolver()
     solver.Solve(constrained_model)
 
-    # pp('\n')
-
-    # pp(solver.ResponseStats())
-
-    # print(model.ModelStats())
     print('\n')
+    print(solver.ResponseStats())
+    print('\n')
+    print(model.ModelStats())
+    print('\n\n')
 
     print('Group Schedules')
     print('===============')

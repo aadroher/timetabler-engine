@@ -14,5 +14,5 @@ def per_subject():
 
 
 def all():
-    # return load_records('Teacher', 'teachers')
-    return per_subject()
+    return load_records('Teacher', 'teachers')
+    # return per_subject()
