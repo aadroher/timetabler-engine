@@ -4,7 +4,7 @@ from ortools.sat.python import cp_model
 from ..utils.printer import pp
 from ..models import rooms, days, time_slots, teachers, subjects, curricula, sessions
 from ..constraints.constraint_adder import add_constraints
-from ..views.cli import room_schedules
+from ..views.cli import room_schedules, teacher_schedules
 
 
 def get_sessions():
@@ -41,11 +41,23 @@ def solve():
     solver = cp_model.CpSolver()
     solver.Solve(constrained_model)
 
-    pp('\n')
-    pp(solver.ResponseStats())
+    # pp('\n')
 
-    print(model.ModelStats())
+    # pp(solver.ResponseStats())
 
+    # print(model.ModelStats())
+    print('\n')
+
+    print('Group Schedules')
+    print('===============')
     schedules = room_schedules(solver=solver, session_vars=session_vars)
     for schedule in schedules:
         print(schedule + '\n')
+        print('-----------------')
+
+    print('Teacher Schedules')
+    print('=================')
+    schedules = teacher_schedules(solver=solver, session_vars=session_vars)
+    for schedule in schedules:
+        print(schedule + '\n')
+        print('\n')
