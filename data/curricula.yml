@@ -1,4 +1,4 @@
-- name: Ciènices i tecnologia
+- name: Ciències i tecnologia
   code: cit
   phase: bat
   subjects: !!python/tuple

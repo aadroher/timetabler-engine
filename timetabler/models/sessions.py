@@ -1,6 +1,5 @@
 from collections import namedtuple
 from itertools import product
-from .loader import get_named_tuple
 
 SessionTuple = namedtuple(
     'SessionTuple',
@@ -9,7 +8,8 @@ SessionTuple = namedtuple(
         'day',
         'time_slot',
         'teacher',
-        'subject'
+        'curriculum',
+        'subject',
     ]
 )
 
@@ -19,13 +19,15 @@ class Session(SessionTuple):
         return ':'.join(item.code for item in self)
 
 
-def from_data(rooms=[], days=[], time_slots=[], teachers=[], subjects=[]):
+def from_data(rooms=[], days=[], time_slots=[], teachers=[], curricula=[], subjects=[]):
     return [
         Session(
             room=r,
             day=d,
             time_slot=h,
             teacher=t,
-            subject=s
-        ) for r, d, h, t, s in product(rooms, days, time_slots, teachers, subjects)
+            curriculum=c,
+            subject=s,
+        )
+        for r, d, h, t, c, s in product(rooms, days, time_slots, teachers, curricula, subjects)
     ]

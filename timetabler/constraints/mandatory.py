@@ -2,12 +2,15 @@
 from itertools import product
 from ..utils.printer import pp
 from ..models import rooms, days, time_slots, teachers, subjects, curricula
+from ..models.sessions import Session
 
 
 def has_the_right_teacher(model=None, session_vars={}, sessions=[]):
-    for r, d, h, t, s in sessions:
-        variable = session_vars[(r, d, h, t, s)]
-        model.Add(variable <= int(s.code in t.subjects))
+    for session in sessions:
+        variable = session_vars[session]
+        model.Add(
+            variable <= int(session.subject.code in session.teacher.subjects)
+        )
 
     return model
 
@@ -15,8 +18,8 @@ def has_the_right_teacher(model=None, session_vars={}, sessions=[]):
 def distinct_subjects_per_slot_and_room(model=None, session_vars={}, sessions=[]):
     for r, d, h in product(rooms.all(), days.all(), time_slots.all()):
         subject_vars = [
-            session_vars[(r, d, h, t, s)]
-            for t, s in product(teachers.all(), subjects.all())
+            session_vars[Session(r, d, h, t, c, s)]
+            for t, c, s in product(teachers.all(), curricula.all(), subjects.all())
         ]
         model.Add(sum(subject_vars) <= 1)
 
@@ -26,8 +29,8 @@ def distinct_subjects_per_slot_and_room(model=None, session_vars={}, sessions=[]
 def distinct_teachers_per_slot(model=None, session_vars={}, sessions=[]):
     for d, h, t in product(days.all(), time_slots.all(), teachers.all()):
         teacher_vars = [
-            session_vars[(r, d, h, t, s)]
-            for r, s in product(rooms.all(), subjects.all())
+            session_vars[Session(r, d, h, t, c, s)]
+            for r, c, s in product(rooms.all(), curricula.all(), subjects.all())
         ]
         model.Add(sum(teacher_vars) <= 1)
 
@@ -35,18 +38,34 @@ def distinct_teachers_per_slot(model=None, session_vars={}, sessions=[]):
 
 
 def room_curriculum_equivalence(model=None, session_vars={}, sessions=[]):
-    cs = curricula.all()
-    cit = next(c for c in cs if c.code == 'cit')
-    hcs = next(c for c in cs if c.code == 'hcs')
-    room_code_to_curriculum = {
-        'r01': cit,
-        'r02': hcs
-    }
+    # cs = curricula.all()
+    # cit = next(c for c in cs if c.code == 'cit')
+    # hcs = next(c for c in cs if c.code == 'hcs')
+    # room_code_to_curriculum = {
+    #     'r01': cit,
+    #     'r02': hcs
+    # }
 
-    for r, d, h, t, s in sessions:
-        curriculum = room_code_to_curriculum[r.code]
-        if s.code not in curriculum.subjects:
-            model.Add(session_vars[(r, d, h, t, s)] == 0)
+    # for r, d, h, t, s in sessions:
+    #     curriculum = room_code_to_curriculum[r.code]
+    #     if s.code not in curriculum.subjects:
+    #         model.Add(session_vars[(r, d, h, t, s)] == 0)
+
+    without_curricula = product(
+        rooms.all(),
+        days.all(),
+        time_slots.all(),
+        teachers.all(),
+        subjects.all()
+    )
+
+    for r, d, h, t, s in without_curricula:
+        model.Add(
+            sum(
+                session_vars[Session(r, d, h, t, c, s)]
+                for c in curricula.all()
+            ) == 1
+        )
 
     return model
 

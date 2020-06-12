@@ -13,6 +13,7 @@ def get_sessions():
         days=days.all(),
         time_slots=time_slots.all(),
         teachers=teachers.all(),
+        curricula=curricula.all(),
         subjects=subjects.all()
     )
 
