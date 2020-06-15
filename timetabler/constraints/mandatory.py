@@ -83,8 +83,8 @@ def hours_a_week_per_subject(model=None, session_vars={}, sessions=[]):
         for subject_code, hours_week in sujects_codes_and_hours:
             room_code = {'cit': 'r01', 'hcs': 'r02'}[curriculum.code]
             room_sessions_with_subject_code = [
-                (r, d, h, t, s) for r, d, h, t, s in sessions
-                if r.code == room_code and s.code == subject_code
+                session for session in sessions
+                if session.room.code == room_code and session.subject.code == subject_code
             ]
             subject_vars = [
                 session_vars[s] for s in room_sessions_with_subject_code
@@ -100,8 +100,8 @@ def hours_a_week_per_subject(model=None, session_vars={}, sessions=[]):
 def min_hours(model=None, session_vars={}, sessions=[]):
     for r, d in product(rooms.all(), days.all()):
         room_day_vars = [
-            session_vars[(r, d, h, t, s)]
-            for h, t, s in product(time_slots.all(), teachers.all(), subjects.all())
+            session_vars[Session(r, d, h, t, c, s)]
+            for h, t, c, s in product(time_slots.all(), teachers.all(), curricula.all(), subjects.all())
         ]
         model.Add(sum(room_day_vars) >= 5)
 
@@ -114,8 +114,8 @@ def consecutive_sessions(model=None, session_vars={}, sessions=[]):
     ]
     for r, d in product(rooms.all(), days.all()):
         core_time_slot_vars = [
-            session_vars[(r, d, h, t, s)]
-            for h, t, s in product(core_time_slots, teachers.all(), subjects.all())
+            session_vars[Session(r, d, h, t, c, s)]
+            for h, t, c, s in product(core_time_slots, teachers.all(), curricula.all(), subjects.all())
         ]
         model.Add(sum(core_time_slot_vars) == 4)
 
