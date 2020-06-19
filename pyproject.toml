@@ -11,6 +11,7 @@ PyYaml = "^5.3.1"
 amazing-printer = "^0.1.0"
 rope = "^0.17.0"
 tabulate = "^0.8.7"
+Faker = "^4.1.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
