@@ -50,7 +50,6 @@
     - mat
     - mcs
     - fis
-    - qui
 # - name: Mathematicican 1
 #   code: ma1
 #   subjects: !!python/tuple

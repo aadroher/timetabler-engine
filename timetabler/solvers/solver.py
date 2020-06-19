@@ -55,9 +55,9 @@ def solve():
         print(schedule + '\n')
         print('-----------------')
 
-    print('Teacher Schedules')
-    print('=================')
-    schedules = teacher_schedules(solver=solver, session_vars=session_vars)
-    for schedule in schedules:
-        print(schedule + '\n')
-        print('\n')
+    # print('Teacher Schedules')
+    # print('=================')
+    # schedules = teacher_schedules(solver=solver, session_vars=session_vars)
+    # for schedule in schedules:
+    #     print(schedule + '\n')
+    #     print('\n')

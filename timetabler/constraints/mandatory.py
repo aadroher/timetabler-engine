@@ -5,16 +5,6 @@ from ..models import rooms, days, time_slots, teachers, subjects, curricula
 from ..models.sessions import Session
 
 
-def has_the_right_teacher(model=None, session_vars={}, sessions=[]):
-    for session in sessions:
-        variable = session_vars[session]
-        model.Add(
-            variable <= int(session.subject.code in session.teacher.subjects)
-        )
-
-    return model
-
-
 def distinct_subjects_per_slot_and_room(model=None, session_vars={}, sessions=[]):
     for r, d, h in product(rooms.all(), days.all(), time_slots.all()):
         subject_vars = [
@@ -33,39 +23,6 @@ def distinct_teachers_per_slot(model=None, session_vars={}, sessions=[]):
             for r, c, s in product(rooms.all(), curricula.all(), subjects.all())
         ]
         model.Add(sum(teacher_vars) <= 1)
-
-    return model
-
-
-def room_curriculum_equivalence(model=None, session_vars={}, sessions=[]):
-    # cs = curricula.all()
-    # cit = next(c for c in cs if c.code == 'cit')
-    # hcs = next(c for c in cs if c.code == 'hcs')
-    # room_code_to_curriculum = {
-    #     'r01': cit,
-    #     'r02': hcs
-    # }
-
-    # for r, d, h, t, s in sessions:
-    #     curriculum = room_code_to_curriculum[r.code]
-    #     if s.code not in curriculum.subjects:
-    #         model.Add(session_vars[(r, d, h, t, s)] == 0)
-
-    without_curricula = product(
-        rooms.all(),
-        days.all(),
-        time_slots.all(),
-        teachers.all(),
-        subjects.all()
-    )
-
-    for r, d, h, t, s in without_curricula:
-        model.Add(
-            sum(
-                session_vars[Session(r, d, h, t, c, s)]
-                for c in curricula.all()
-            ) == 1
-        )
 
     return model
 
@@ -93,6 +50,42 @@ def hours_a_week_per_subject(model=None, session_vars={}, sessions=[]):
             model.AddLinearConstraint(
                 sum(subject_vars), hours_week, hours_week
             )
+
+    return model
+
+
+def subject_has_the_right_curriculum(model=None, session_vars={}, sessions=[]):
+    for session in sessions:
+        invalid_session = session.subject.code not in session.curriculum.subjects
+        if invalid_session:
+            model.Add(session_vars[session] == 0)
+
+    return model
+
+
+def has_the_right_teacher(model=None, session_vars={}, sessions=[]):
+    for session in sessions:
+        variable = session_vars[session]
+        model.Add(
+            variable <= int(session.subject.code in session.teacher.subjects)
+        )
+
+    return model
+
+
+def room_curriculum_equivalence(model=None, session_vars={}, sessions=[]):
+    cs = curricula.all()
+    cit = next(c for c in cs if c.code == 'cit')
+    hcs = next(c for c in cs if c.code == 'hcs')
+    room_code_to_curriculum = {
+        'r01': cit,
+        'r02': hcs
+    }
+
+    for session in sessions:
+        invalid_assignment = room_code_to_curriculum[session.room.code] != session.curriculum
+        if invalid_assignment:
+            model.Add(session_vars[session] == 0)
 
     return model
 
