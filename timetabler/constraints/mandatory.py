@@ -134,33 +134,39 @@ def same_teacher_for_subject_and_curriculum(model=None, session_vars={}, session
     def get_num_hours_week(subject):
         return 3 if subject.code in common_subjects_codes else 4
 
-    for r, t, s in product(rooms.all(), teachers.all(), subjects.all()):
+    for r, t, c, s in product(rooms.all(), teachers.all(), curricula.all(), subjects.all()):
         week_subject_teacher_sessions = [
             session_vars[Session(r, d, h, t, c, s)]
-            for d, h, c in product(days.all(), time_slots.all(), curricula.all())
-        ]
-        num_sessions = len(week_subject_teacher_sessions)
-        index_combinations = combinations(
-            range(0, num_sessions),
-            get_num_hours_week(s)
-        )
-
-        def get_assignment(true_value_indexes):
-            return tuple(
-                1 if i in true_value_indexes else 0
-                for i in range(0, num_sessions)
-            )
-
-        allowed_assignments = [
-            get_assignment(index_combination)
-            for index_combination in index_combinations
+            for d, h in product(days.all(), time_slots.all())
         ]
 
-        # print(len(allowed_assignments))
+        model.Add(sum(week_subject_teacher_sessions) <= get_num_hours_week(s))
 
-        model.AddAllowedAssignments(
-            week_subject_teacher_sessions,
-            allowed_assignments
-        )
+        # model.AddLinearExpressionInDomain(sum(week_subject_teacher_sessions), [
+        #                                   get_num_hours_week(s), 0])
+
+        # num_sessions = len(week_subject_teacher_sessions)
+        # index_combinations = combinations(
+        #     range(0, num_sessions),
+        #     get_num_hours_week(s)
+        # )
+
+        # def get_assignment(true_value_indexes):
+        #     return tuple(
+        #         1 if i in true_value_indexes else 0
+        #         for i in range(0, num_sessions)
+        #     )
+
+        # allowed_assignments = [
+        #     get_assignment(index_combination)
+        #     for index_combination in index_combinations
+        # ]
+
+        # # print(len(allowed_assignments))
+
+        # model.AddAllowedAssignments(
+        #     week_subject_teacher_sessions,
+        #     allowed_assignments
+        # )
 
     return model
