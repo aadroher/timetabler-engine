@@ -2,7 +2,7 @@
 from ..models.sessions import Session
 from ..models import rooms, days, time_slots, teachers, subjects, curricula
 from ..utils.printer import pp
-from itertools import product, combinations
+from itertools import product, combinations, chain
 
 
 def distinct_subjects_per_slot_and_room(model=None, session_vars={}, sessions=[]):
@@ -140,16 +140,49 @@ def same_teacher_for_subject_and_curriculum(model=None, session_vars={}, session
             for d, h in product(days.all(), time_slots.all())
         ]
 
-        model.Add(sum(week_subject_teacher_sessions) <= get_num_hours_week(s))
-
+        # model.AddImplication(
+        #     sum(week_subject_teacher_sessions) > 0,
+        #     sum(week_subject_teacher_sessions) == get_num_hours_week(s)
+        # )
+        # model.Add(
+        #     sum(week_subject_teacher_sessions) <= get_num_hours_week(s)
+        # ).OnlyEnforceIf(
+        #     sum(week_subject_teacher_sessions) > 0
+        # )
+        # model.Maximize(sum(week_subject_teacher_sessions))
         # model.AddLinearExpressionInDomain(sum(week_subject_teacher_sessions), [
         #                                   get_num_hours_week(s), 0])
 
-        # num_sessions = len(week_subject_teacher_sessions)
-        # index_combinations = combinations(
-        #     range(0, num_sessions),
-        #     get_num_hours_week(s)
-        # )
+        num_sessions = len(week_subject_teacher_sessions)
+        session_var_combinations = combinations(
+            week_subject_teacher_sessions,
+            get_num_hours_week(s)
+        )
+
+        def get_transition_triples(session_var_combination):
+            return [
+                (i, session_var, i+1)
+                for i, session_var in enumerate(session_var_combination)
+            ]
+
+        transition_triple_lists = [
+            get_transition_triples(session_var_combination)
+            for session_var_combination in session_var_combinations
+        ]
+        transition_triples = [
+            transition_triple
+            for transition_triple_list in transition_triple_lists
+            for transition_triple in transition_triple_list
+        ]
+        # print(transition_triples[10:15])
+        # print()
+
+        model.AddAutomaton(
+            week_subject_teacher_sessions,
+            0,
+            [num_sessions],
+            transition_triples
+        )
 
         # def get_assignment(true_value_indexes):
         #     return tuple(
