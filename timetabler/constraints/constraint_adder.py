@@ -8,7 +8,8 @@ from .mandatory import (
     room_curriculum_equivalence,
     min_hours,
     consecutive_sessions,
-    max_subject_hours_per_day
+    max_subject_hours_per_day,
+    same_teacher_for_subject_and_curriculum
 )
 
 
@@ -21,7 +22,8 @@ mandatory_constraints = [
     room_curriculum_equivalence,
     min_hours,
     consecutive_sessions,
-    max_subject_hours_per_day
+    max_subject_hours_per_day,
+    same_teacher_for_subject_and_curriculum
 ]
 
 

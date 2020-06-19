@@ -1,8 +1,8 @@
 
-from itertools import product
-from ..utils.printer import pp
-from ..models import rooms, days, time_slots, teachers, subjects, curricula
 from ..models.sessions import Session
+from ..models import rooms, days, time_slots, teachers, subjects, curricula
+from ..utils.printer import pp
+from itertools import product, combinations
 
 
 def distinct_subjects_per_slot_and_room(model=None, session_vars={}, sessions=[]):
@@ -122,5 +122,45 @@ def max_subject_hours_per_day(model=None, session_vars={}, sessions=[]):
             for h, t, c in product(time_slots.all(), teachers.all(), curricula.all())
         ]
         model.Add(sum(room_day_subject_sessions) <= 2)
+
+    return model
+
+
+def same_teacher_for_subject_and_curriculum(model=None, session_vars={}, sessions=[]):
+    common_subjects_codes = [
+        'cat', 'cas', 'ang', 'fil', 'cmc'
+    ]
+
+    def get_num_hours_week(subject):
+        return 3 if subject.code in common_subjects_codes else 4
+
+    for r, t, s in product(rooms.all(), teachers.all(), subjects.all()):
+        week_subject_teacher_sessions = [
+            session_vars[Session(r, d, h, t, c, s)]
+            for d, h, c in product(days.all(), time_slots.all(), curricula.all())
+        ]
+        num_sessions = len(week_subject_teacher_sessions)
+        index_combinations = combinations(
+            range(0, num_sessions),
+            get_num_hours_week(s)
+        )
+
+        def get_assignment(true_value_indexes):
+            return tuple(
+                1 if i in true_value_indexes else 0
+                for i in range(0, num_sessions)
+            )
+
+        allowed_assignments = [
+            get_assignment(index_combination)
+            for index_combination in index_combinations
+        ]
+
+        # print(len(allowed_assignments))
+
+        model.AddAllowedAssignments(
+            week_subject_teacher_sessions,
+            allowed_assignments
+        )
 
     return model
