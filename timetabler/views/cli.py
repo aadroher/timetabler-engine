@@ -28,7 +28,7 @@ def get_row(solver=None, session_vars={}, room=None, time_slot=None):
         if len(session_list) == 0:
             return ' '
         else:
-            return str(session_list[0])
+            return '|'.join([str(s) for s in session_list])
 
     time_slot_session_lists = [
         list(filter(exists, get_day_sessions(day)))
@@ -85,7 +85,7 @@ def get_teacher_schedule_row(solver=None, session_vars={}, teacher=None, time_sl
         if len(session_list) == 0:
             return ' ' * 18
         else:
-            return str(session_list[0])
+            return '|'.join([str(s) for s in session_list])
 
     time_slot_session_lists = [
         list(filter(exists, get_day_sessions(day)))

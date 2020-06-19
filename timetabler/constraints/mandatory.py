@@ -113,3 +113,14 @@ def consecutive_sessions(model=None, session_vars={}, sessions=[]):
         model.Add(sum(core_time_slot_vars) == 4)
 
     return model
+
+
+def max_subject_hours_per_day(model=None, session_vars={}, sessions=[]):
+    for r, d, s in product(rooms.all(), days.all(), subjects.all()):
+        room_day_subject_sessions = [
+            session_vars[Session(r, d, h, t, c, s)]
+            for h, t, c in product(time_slots.all(), teachers.all(), curricula.all())
+        ]
+        model.Add(sum(room_day_subject_sessions) <= 2)
+
+    return model
