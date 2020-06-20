@@ -5,6 +5,7 @@ from ..utils.printer import pp
 from ..models import rooms, days, time_slots, teachers, subjects, curricula, sessions
 from ..constraints.constraint_adder import add_constraints
 from ..views.cli import room_schedules, teacher_schedules
+from ..views.solution_printer import SolutionPrinter
 
 
 def get_sessions():
@@ -40,7 +41,8 @@ def solve():
     )
 
     solver = cp_model.CpSolver()
-    status = solver.Solve(constrained_model)
+    solution_printer = SolutionPrinter(session_vars=session_vars)
+    solver.SolveWithSolutionCallback(constrained_model, solution_printer)
 
     print('\n')
     print(solver.ResponseStats())
@@ -53,16 +55,16 @@ def solve():
     # else:
     # print(status)
 
-    print('Group Schedules')
-    print('===============')
-    schedules = room_schedules(solver=solver, session_vars=session_vars)
-    for schedule in schedules:
-        print(schedule + '\n')
-        print('-----------------')
+    # print('Group Schedules')
+    # print('===============')
+    # schedules = room_schedules(solver=solver, session_vars=session_vars)
+    # for schedule in schedules:
+    #     print(schedule + '\n')
+    #     print('-----------------')
 
-    print('Teacher Schedules')
-    print('=================')
-    schedules = teacher_schedules(solver=solver, session_vars=session_vars)
-    for schedule in schedules:
-        print(schedule + '\n')
-        print('\n')
+    # print('Teacher Schedules')
+    # print('=================')
+    # schedules = teacher_schedules(solver=solver, session_vars=session_vars)
+    # for schedule in schedules:
+    #     print(schedule + '\n')
+    #     print('\n')
