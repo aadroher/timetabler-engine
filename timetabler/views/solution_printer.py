@@ -4,6 +4,7 @@ import tabulate as tabulate_module
 from tabulate import tabulate
 from ..models import rooms, days, time_slots, teachers, curricula, subjects
 from ..models.sessions import Session
+from ..constraints.desiderata import evaluate_solution
 
 tabulate_module.PRESERVE_WHITESPACE = True
 
@@ -12,6 +13,10 @@ class SolutionPrinter(CpSolverSolutionCallback):
     def __init__(self, session_vars={}):
         CpSolverSolutionCallback.__init__(self)
         self.session_vars = session_vars
+        self.last_best_solution = {
+            'solution': 0,
+            'score': 0
+        }
         self.solution_count = 0
 
     def get_row(self, room=None, time_slot=None):
@@ -121,23 +126,32 @@ class SolutionPrinter(CpSolverSolutionCallback):
 
     def OnSolutionCallback(self):
         self.solution_count += 1
+        new_solution_score = evaluate_solution(
+            get_value=self.Value, session_vars=self.session_vars
+        )
+        if new_solution_score > self.last_best_solution['score']:
+            self.last_best_solution = {
+                'solution': self.solution_count,
+                'score': new_solution_score
+            }
 
-        print('\n')
-        print(f'SOLUTION: {self.solution_count}')
-        print('\n')
-
-        print('Group Schedules')
-        print('===============')
-        schedules = self.room_schedules()
-        for schedule in schedules:
-            print(schedule + '\n')
-            print('-----------------')
-
-        print('Teacher Schedules')
-        print('=================')
-        schedules = self.teacher_schedules()
-        for schedule in schedules:
-            print(schedule + '\n')
+            print('\n')
+            print(f'NEW BEST SOLUTION!: {self.solution_count}')
+            print(f'Score: {new_solution_score} %')
             print('\n')
 
-        print('+++++++++++++++++++++++++++')
+            print('Group Schedules')
+            print('===============')
+            schedules = self.room_schedules()
+            for schedule in schedules:
+                print(schedule + '\n')
+                print('-----------------')
+
+            print('Teacher Schedules')
+            print('=================')
+            schedules = self.teacher_schedules()
+            for schedule in schedules:
+                print(schedule + '\n')
+                print('\n')
+
+            print('+++++++++++++++++++++++++++')

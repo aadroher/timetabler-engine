@@ -11,10 +11,6 @@ from .mandatory import (
     max_subject_hours_per_day,
     same_teacher_for_subject_and_curriculum
 )
-from .desiderata import (
-    minimize_teacher_work_days,
-    minimize_teacher_sessions_deviation,
-)
 
 
 mandatory_constraints = [
@@ -30,11 +26,6 @@ mandatory_constraints = [
     same_teacher_for_subject_and_curriculum
 ]
 
-desiderata = [
-    minimize_teacher_work_days,
-    minimize_teacher_sessions_deviation
-]
-
 
 def add_constraints(model=None, session_vars={}, sessions=[]):
     return reduce(
@@ -43,6 +34,6 @@ def add_constraints(model=None, session_vars={}, sessions=[]):
             session_vars=session_vars,
             sessions=sessions
         ),
-        mandatory_constraints + desiderata,
+        mandatory_constraints,
         model
     )

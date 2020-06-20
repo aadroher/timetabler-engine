@@ -42,7 +42,7 @@ def solve():
 
     solver = cp_model.CpSolver()
     solution_printer = SolutionPrinter(session_vars=session_vars)
-    solver.SolveWithSolutionCallback(constrained_model, solution_printer)
+    solver.SearchForAllSolutions(constrained_model, solution_printer)
 
     print('\n')
     print(solver.ResponseStats())
