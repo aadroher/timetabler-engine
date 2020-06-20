@@ -140,66 +140,32 @@ def same_teacher_for_subject_and_curriculum(model=None, session_vars={}, session
             for d, h in product(days.all(), time_slots.all())
         ]
 
-        # model.AddImplication(
-        #     sum(week_subject_teacher_sessions) > 0,
-        #     sum(week_subject_teacher_sessions) == get_num_hours_week(s)
-        # )
-        # model.Add(
-        #     sum(week_subject_teacher_sessions) <= get_num_hours_week(s)
-        # ).OnlyEnforceIf(
-        #     sum(week_subject_teacher_sessions) > 0
-        # )
-        # model.Maximize(sum(week_subject_teacher_sessions))
-        # model.AddLinearExpressionInDomain(sum(week_subject_teacher_sessions), [
-        #                                   get_num_hours_week(s), 0])
-
         num_sessions = len(week_subject_teacher_sessions)
-        session_var_combinations = combinations(
-            week_subject_teacher_sessions,
+        index_combinations = combinations(
+            range(num_sessions),
             get_num_hours_week(s)
         )
 
-        def get_transition_triples(session_var_combination):
-            return [
-                (i, session_var, i+1)
-                for i, session_var in enumerate(session_var_combination)
-            ]
+        zero_assignment = tuple([0] * num_sessions)
 
-        transition_triple_lists = [
-            get_transition_triples(session_var_combination)
-            for session_var_combination in session_var_combinations
-        ]
-        transition_triples = [
-            transition_triple
-            for transition_triple_list in transition_triple_lists
-            for transition_triple in transition_triple_list
-        ]
-        # print(transition_triples[10:15])
+        def get_assignment(true_value_indexes):
+            return tuple(
+                1 if i in true_value_indexes else 0
+                for i in range(0, num_sessions)
+            )
+
+        allowed_assignments = [
+            get_assignment(index_combination)
+            for index_combination in index_combinations
+        ] + [zero_assignment]
+
+        # print([allowed_assignments[-2:]])
         # print()
+        print(len(allowed_assignments))
 
-        model.AddAutomaton(
+        model.AddAllowedAssignments(
             week_subject_teacher_sessions,
-            0,
-            [num_sessions],
-            transition_triples
+            allowed_assignments
         )
-
-        # def get_assignment(true_value_indexes):
-        #     return tuple(
-        #         1 if i in true_value_indexes else 0
-        #         for i in range(0, num_sessions)
-        #     )
-
-        # allowed_assignments = [
-        #     get_assignment(index_combination)
-        #     for index_combination in index_combinations
-        # ]
-
-        # # print(len(allowed_assignments))
-
-        # model.AddAllowedAssignments(
-        #     week_subject_teacher_sessions,
-        #     allowed_assignments
-        # )
 
     return model
