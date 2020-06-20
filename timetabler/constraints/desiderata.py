@@ -73,7 +73,7 @@ def get_teacher_sessions_deviation(get_value=lambda x: x, session_vars={}):
         get_teacher_num_sessions_week(teacher=t)
         for t in teachers.all()
     ]
-    maximum = sum(teacher_num_sessions_week)
+    maximum = 30
     standard_deviation = pstdev(teacher_num_sessions_week)
 
     return ((maximum - standard_deviation) / maximum) * 100
