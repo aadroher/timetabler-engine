@@ -1,4 +1,5 @@
 
+from functools import lru_cache
 from collections import namedtuple
 from yaml import load, Loader as YamlLoader, Dumper as YamlDumper
 from pathlib import Path
@@ -15,6 +16,7 @@ def get_named_tuple(type_name='', record=None):
     return NewClass(**record)
 
 
+@lru_cache
 def load_records(type_name='', collection_name=''):
     raw_data = (data_dir_path/f'{collection_name}.yml').read_text()
     records = load(raw_data, Loader=YamlLoader)
