@@ -49,22 +49,3 @@ def solve():
     print('\n')
     print(model.ModelStats())
     print('\n\n')
-
-    # if status == cp_model.UNFEASIBLE:
-    #     print('UNFEASIBLE!')
-    # else:
-    # print(status)
-
-    # print('Group Schedules')
-    # print('===============')
-    # schedules = room_schedules(solver=solver, session_vars=session_vars)
-    # for schedule in schedules:
-    #     print(schedule + '\n')
-    #     print('-----------------')
-
-    # print('Teacher Schedules')
-    # print('=================')
-    # schedules = teacher_schedules(solver=solver, session_vars=session_vars)
-    # for schedule in schedules:
-    #     print(schedule + '\n')
-    #     print('\n')

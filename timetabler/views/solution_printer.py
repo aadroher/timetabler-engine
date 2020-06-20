@@ -67,6 +67,58 @@ class SolutionPrinter(CpSolverSolutionCallback):
             for room in rooms.all()
         ]
 
+    def get_teacher_schedule_row(self, teacher=None, time_slot=None):
+        def get_day_sessions(day):
+            return [
+                Session(
+                    room=room,
+                    day=day,
+                    time_slot=time_slot,
+                    teacher=teacher,
+                    curriculum=curriculum,
+                    subject=subject
+                ) for room, curriculum, subject in product(rooms.all(), curricula.all(), subjects.all())
+            ]
+
+        def exists(session):
+            session_var = self.session_vars[session]
+            return bool(self.Value(session_var))
+
+        def get_slot_label(session_list):
+            if len(session_list) == 0:
+                return ' ' * 18
+            else:
+                return '|'.join([str(s) for s in session_list])
+
+        time_slot_session_lists = [
+            list(filter(exists, get_day_sessions(day)))
+            for day in days.all()
+        ]
+
+        return [
+            get_slot_label(session_list)
+            for session_list in time_slot_session_lists
+        ]
+
+    def get_teacher_schedule(self, solver=None, session_vars={}, teacher=None):
+        week_day_codes = [day.code for day in days.all()]
+        headers = [teacher.code, *week_day_codes]
+        rows = [
+            [time_slot.code] +
+            self.get_teacher_schedule_row(
+                teacher=teacher,
+                time_slot=time_slot
+            )
+            for time_slot in time_slots.all()
+        ]
+        return tabulate(rows, headers=headers)
+
+    def teacher_schedules(self, solver=None, session_vars={}):
+        return [
+            self.get_teacher_schedule(teacher=teacher)
+            for teacher in teachers.all()
+        ]
+
     def OnSolutionCallback(self):
         self.solution_count += 1
 
@@ -74,22 +126,18 @@ class SolutionPrinter(CpSolverSolutionCallback):
         print(f'SOLUTION: {self.solution_count}')
         print('\n')
 
-        # print('\n')
-        # print(self.solver.ResponseStats())
-        # print('\n')
-        # print(self.model.ModelStats())
-        # print('\n\n')
-
-        # if status == cp_model.UNFEASIBLE:
-        #     print('UNFEASIBLE!')
-        # else:
-        # print(status)
-
         print('Group Schedules')
         print('===============')
         schedules = self.room_schedules()
         for schedule in schedules:
             print(schedule + '\n')
             print('-----------------')
+
+        print('Teacher Schedules')
+        print('=================')
+        schedules = self.teacher_schedules()
+        for schedule in schedules:
+            print(schedule + '\n')
+            print('\n')
 
         print('+++++++++++++++++++++++++++')
