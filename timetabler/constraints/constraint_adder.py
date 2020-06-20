@@ -1,23 +1,29 @@
 from functools import reduce
 from .mandatory import (
-    has_the_right_teacher,
     distinct_subjects_per_slot_and_room,
     distinct_teachers_per_slot,
-    room_curriculum_equivalence,
     hours_a_week_per_subject,
+    subject_has_the_right_curriculum,
+    has_the_right_teacher,
+    room_curriculum_equivalence,
     min_hours,
-    consecutive_sessions
+    consecutive_sessions,
+    max_subject_hours_per_day,
+    same_teacher_for_subject_and_curriculum
 )
 
 
 mandatory_constraints = [
-    has_the_right_teacher,
-    hours_a_week_per_subject,
     distinct_subjects_per_slot_and_room,
     distinct_teachers_per_slot,
+    hours_a_week_per_subject,
+    subject_has_the_right_curriculum,
+    has_the_right_teacher,
     room_curriculum_equivalence,
     min_hours,
-    consecutive_sessions
+    consecutive_sessions,
+    max_subject_hours_per_day,
+    same_teacher_for_subject_and_curriculum
 ]
 
 

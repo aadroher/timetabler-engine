@@ -1,7 +1,7 @@
 from itertools import product
 import tabulate as tabulate_module
 from tabulate import tabulate
-from ..models import rooms, days, time_slots, teachers, subjects
+from ..models import rooms, days, time_slots, teachers, curricula, subjects
 from ..models.sessions import Session
 
 tabulate_module.PRESERVE_WHITESPACE = True
@@ -15,8 +15,9 @@ def get_row(solver=None, session_vars={}, room=None, time_slot=None):
                 day=day,
                 time_slot=time_slot,
                 teacher=teacher,
+                curriculum=curriculum,
                 subject=subject
-            ) for teacher, subject in product(teachers.all(), subjects.all())
+            ) for teacher, curriculum, subject in product(teachers.all(), curricula.all(), subjects.all())
         ]
 
     def exists(session):
@@ -27,7 +28,7 @@ def get_row(solver=None, session_vars={}, room=None, time_slot=None):
         if len(session_list) == 0:
             return ' '
         else:
-            return str(session_list[0])
+            return '|'.join([str(s) for s in session_list])
 
     time_slot_session_lists = [
         list(filter(exists, get_day_sessions(day)))
@@ -71,8 +72,9 @@ def get_teacher_schedule_row(solver=None, session_vars={}, teacher=None, time_sl
                 day=day,
                 time_slot=time_slot,
                 teacher=teacher,
+                curriculum=curriculum,
                 subject=subject
-            ) for room, subject in product(rooms.all(), subjects.all())
+            ) for room, curriculum, subject in product(rooms.all(), curricula.all(), subjects.all())
         ]
 
     def exists(session):
@@ -83,7 +85,7 @@ def get_teacher_schedule_row(solver=None, session_vars={}, teacher=None, time_sl
         if len(session_list) == 0:
             return ' ' * 18
         else:
-            return str(session_list[0])
+            return '|'.join([str(s) for s in session_list])
 
     time_slot_session_lists = [
         list(filter(exists, get_day_sessions(day)))

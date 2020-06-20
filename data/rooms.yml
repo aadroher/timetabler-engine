@@ -1,4 +1,18 @@
-- name: Aula 1
+- name: Aula 01
   code: r01
-- name: Aula 2
+  seats: 30
+- name: Aula 02
   code: r02
+  seats: 30
+# - name: Aula 03
+#   code: r03
+#   seats: 30
+# - name: Aula 04
+#   code: r04
+#   seats: 30
+# - name: Aula 05
+#   code: r05
+#   seats: 18
+# - name: Aula 06
+#   code: r06
+#   seats: 18

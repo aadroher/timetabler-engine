@@ -13,6 +13,7 @@ def get_sessions():
         days=days.all(),
         time_slots=time_slots.all(),
         teachers=teachers.all(),
+        curricula=curricula.all(),
         subjects=subjects.all()
     )
 
@@ -39,13 +40,18 @@ def solve():
     )
 
     solver = cp_model.CpSolver()
-    solver.Solve(constrained_model)
+    status = solver.Solve(constrained_model)
 
     print('\n')
     print(solver.ResponseStats())
     print('\n')
     print(model.ModelStats())
     print('\n\n')
+
+    # if status == cp_model.UNFEASIBLE:
+    #     print('UNFEASIBLE!')
+    # else:
+    # print(status)
 
     print('Group Schedules')
     print('===============')
