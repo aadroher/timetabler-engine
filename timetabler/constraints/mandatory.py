@@ -140,32 +140,11 @@ def same_teacher_for_subject_and_curriculum(model=None, session_vars={}, session
             for d, h in product(days.all(), time_slots.all())
         ]
 
-        num_sessions = len(week_subject_teacher_sessions)
-        index_combinations = combinations(
-            range(num_sessions),
-            get_num_hours_week(s)
-        )
-
-        zero_assignment = tuple([0] * num_sessions)
-
-        def get_assignment(true_value_indexes):
-            return tuple(
-                1 if i in true_value_indexes else 0
-                for i in range(0, num_sessions)
+        for session_var in week_subject_teacher_sessions:
+            model.Add(
+                sum(week_subject_teacher_sessions) == get_num_hours_week(s)
+            ).OnlyEnforceIf(
+                session_var
             )
-
-        allowed_assignments = [
-            get_assignment(index_combination)
-            for index_combination in index_combinations
-        ] + [zero_assignment]
-
-        # print([allowed_assignments[-2:]])
-        # print()
-        print(len(allowed_assignments))
-
-        model.AddAllowedAssignments(
-            week_subject_teacher_sessions,
-            allowed_assignments
-        )
 
     return model
