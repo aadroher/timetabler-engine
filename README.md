@@ -4,9 +4,9 @@
 
 ## What 
 
-This is the result of my first attempts at discovering the possibilities of [Constraint Satisfaction Problem (CPS)](https://en.wikipedia.org/wiki/Constraint_satisfaction_problem) solvers, in particular, [Boolean Satisfiability Problems (SAT)](https://en.wikipedia.org/wiki/Boolean_satisfiability_problem). 
+This is the result of my first attempts at discovering the possibilities of [Constraint Satisfaction Problem (CPS)](https://en.wikipedia.org/wiki/Constraint_satisfaction_problem) solvers, in particular of [Boolean Satisfiability Problems (SAT)](https://en.wikipedia.org/wiki/Boolean_satisfiability_problem).
 
-This is a proof of concept that takes a toy example of a high school and tries to find solutions to assigning classroom / groups, teachers and subjects to time slots in week days in order to generate a schedule. It uses the CP-SAT solver of [Google's OR-Tools](https://developers.google.com/optimization/cp/cp_solver)
+This is a proof of concept that takes a toy example of a high school and tries to generate a session schedule for it by finding possible assignments of classroom / groups, teachers and subjects to time slots in week days. It uses the CP-SAT solver of [Google's OR-Tools](https://developers.google.com/optimization/cp/cp_solver)
 
 ### Installation
 
