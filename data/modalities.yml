@@ -1,0 +1,9 @@
+- name: Ciències i tecnologia
+  code: cit
+  phase: bat
+- name: Humanitats i ciències socials
+  code: hcs
+  phase: bat
+- name: Arts
+  code: art
+  phase: bat

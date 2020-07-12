@@ -6,3 +6,7 @@
   code: mod
   phase: bat
   hours_week: 4
+- name: Specific
+  code: spe
+  phase: bat
+  hours_week: 2

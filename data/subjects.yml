@@ -1,48 +1,138 @@
-- name: Català
-  code: cat
-  type: com
-- name: Castellà
-  code: cas
-  type: com
-- name: Anglès
-  code: ang
-  type: com
+- name: Llengua Catalana i Literatura I
+  code: ca1
+  week_h: 2
+- name: Llengua Catalana i Literatura II
+  code: ca2
+  week_h: 2
+- name: Llengua Castellana i Literatura I
+  code: cs1
+  week_h: 2
+- name: Llengua Castellana i Literatura II
+  code: cs2
+  week_h: 2
+- name: Primera Llengua Estrangera I - Anglès
+  code: an1
+  week_h: 3
+- name: Primera Llengua Estrangera II - Anglès
+  code: an2
+  week_h: 3
+- name: Primera Llengua Estrangera I - Alemany
+  code: al1
+  week_h: 3
+- name: Primera Llengua Estrangera II - Alemany
+  code: al1
+  week_h: 3
 - name: Filosofia
   code: fil
-  type: com
+  week_h: 2
 - name: Ciències per al Món Contemporani
   code: cmc
-  type: com
+  week_h: 2
+- name: Educació Física
+  code: edf
+  week_h: 2
+- name: Història de la Filosofia
+  code: hfi
+  week_h: 3
 - name: Història
   code: his
-  type: com
-- name: Matemàtiques
-  code: mat
-  type: mod
-- name: Matemàtiques CS
-  code: mcs
-  type: mod
-- name: Llatí
-  code: lla
-  type: mod
-- name: Biologia
-  code: bio
-  type: mod
-- name: Física
-  code: fis
-  type: mod
-- name: Química
-  code: qui
-  type: mod
+  week_h: 3
+- name: Tutoria
+  code: tut
+  week_h: 1
+- name: Matemàtiques I
+  code: ma1
+  week_h: 4
+- name: Matemàtiques II
+  code: ma2
+  week_h: 4
+- name: Biologia I
+  code: bi1
+  week_h: 4
+- name: Biologia II
+  code: bi2
+  week_h: 4
+- name: Física I
+  code: fi1
+  week_h: 4
+- name: Física II
+  code: fi2
+  week_h: 4
+- name: Química I
+  code: qu1
+  week_h: 4
+- name: Química II
+  code: qu2
+  week_h: 4
+- name: Dibuix Tècnic I
+  code: dt1
+  week_h: 4
+- name: Dibuix Tècnic II
+  code: dt2
+  week_h: 4
+- name: Tecnologia Industrial II
+  code: ti1
+  week_h: 4
+- name: Tecnologia Industrial II
+  code: ti2
+  week_h: 4
+- name: Ciències de la Terra I
+  code: ct1
+  week_h: 4
+- name: Ciències de la Terra II
+  code: ct2
+  week_h: 4
+- name: Electrotècnia
+  code: ele
+  week_h: 4
+- name: Matemàtiques Aplicades a les Ciències Socials I
+  code: ms1
+  week_h: 4
+- name: Matemàtiques Aplicades a les Ciències Socials II
+  code: ms2
+  week_h: 4
+- name: Llatí I
+  code: ll1
+  week_h: 4
+- name: Llatí II
+  code: ll2
+  week_h: 4
 - name: Economia
   code: eco
-  type: mod
+  week_h: 4
+- name: Economia de l'Empresa I
+  code: em1
+  week_h: 4
+- name: Economia de l'Empresa II
+  code: em2
+  week_h: 4
 - name: Geografia
   code: geo
-  type: mod
-- name: Grec
-  code: gre
-  type: mod
-- name: Història de L'Art
+  week_h: 4
+- name: Grec I
+  code: gr1
+  week_h: 4
+- name: Grec II
+  code: gr2
+  week_h: 4
+- name: Història de l'Art
   code: hda
-  type: mod
+  week_h: 4
+- name: Història del Món Contemporani
+  code: hmc
+  week_h: 4
+- name: Literatura Catalana
+  code: lca
+  week_h: 4
+- name: Literatura Castellana
+  code: lcs
+  week_h: 4
+- name: Literatura Universal
+  code: lun
+  week_h: 4
+- name: Psicologia
+  code: psi
+  week_h: 2
+- name: Sociologia
+  code: soc
+  week_h: 2
