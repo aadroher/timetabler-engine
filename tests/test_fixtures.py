@@ -1,5 +1,5 @@
 import pprint
-from .fixtures import load_data
+from .fixtures.loader import load_data
 
 pp = pprint.PrettyPrinter(indent=4).pprint
 

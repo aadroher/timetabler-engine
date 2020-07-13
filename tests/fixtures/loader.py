@@ -4,11 +4,12 @@ from yaml import load, Loader as YamlLoader, Dumper as YamlDumper
 import json
 
 current_dir = Path(__file__).parent
-data_dir_path = current_dir/'../data'
+data_dir_path = current_dir/'../../data'
 
 COLLECTION_NAMES = [
     'phases',
-    'curricula'
+    'modalities',
+    'subjects'
 ]
 
 
@@ -27,4 +28,8 @@ def add_collection(collections, collection_name):
 def load_data():
     collections = reduce(add_collection, COLLECTION_NAMES, {})
 
-    return json.dumps(collections, indent=2)
+    return json.dumps(
+        collections,
+        indent=2,
+        ensure_ascii=False
+    )
