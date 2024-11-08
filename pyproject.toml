@@ -3,6 +3,7 @@ name = "timetabler-engine"
 version = "0.1.0"
 description = ""
 authors = ["Armand Adroher <aadroher@gmail.com>"]
+package-mode = false
 
 [tool.poetry.dependencies]
 python = "^3.8"
@@ -12,7 +13,7 @@ rope = "^0.17.0"
 tabulate = "^0.8.7"
 ortools = "^8.1.8487"
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 pytest = "^5.2"
 ipython = "^7.14.0"
 pylint = "^2.5.2"
